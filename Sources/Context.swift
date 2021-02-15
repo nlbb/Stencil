@@ -1,5 +1,5 @@
 /// A container for template variables.
-public class Context {
+open class Context {
   var dictionaries: [[String: Any?]]
 
   public let environment: Environment
@@ -14,7 +14,7 @@ public class Context {
     self.environment = environment ?? Environment()
   }
 
-  public subscript(key: String) -> Any? {
+  open subscript(key: String) -> Any? {
     /// Retrieves a variable's value, starting at the current context and going upwards
     get {
       for dictionary in Array(dictionaries.reversed()) {
@@ -46,13 +46,13 @@ public class Context {
   }
 
   /// Push a new level onto the context for the duration of the execution of the given closure
-  public func push<Result>(dictionary: [String: Any] = [:], closure: (() throws -> Result)) rethrows -> Result {
+  open func push<Result>(dictionary: [String: Any] = [:], closure: (() throws -> Result)) rethrows -> Result {
     push(dictionary)
     defer { _ = pop() }
     return try closure()
   }
 
-  public func flatten() -> [String: Any] {
+  open func flatten() -> [String: Any] {
     var accumulator: [String: Any] = [:]
 
     for dictionary in dictionaries {
